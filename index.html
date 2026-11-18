@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f07824">
+<meta name="description" content="سفرتنا: وصفات إندومي وأكلات منزلية ووجبات سريعة ومشروبات مع خطوات التحضير ونصائح الطبخ.">
+<meta name="keywords" content="سفرتنا, وصفات, طبخ, أكلات, غداء, مشروبات">
+<title>سفرتنا | وصفات وأكلات</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{
+--main:#f07824;--dark:#bd4d12;--bg:#fff8ef;
+--card:#fff;--text:#30251e;--muted:#806e60;
+--border:#f0dfd0;--shadow:0 5px 20px #6c3d1710
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(120deg,#f07824,#ffad55);color:white;padding:17px 5%;position:sticky;top:0;z-index:5;box-shadow:var(--shadow)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.logo{font-size:24px;font-weight:bold}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+button{font-family:inherit;cursor:pointer;border:0}
+nav button{background:#ffffff27;color:white;padding:9px 12px;border-radius:20px}
+nav button.active,nav button:hover{background:white;color:var(--dark)}
+.hero{margin:20px auto;max-width:1100px;padding:35px 22px;border-radius:22px;background:linear-gradient(120deg,#492a1cdd,#8d431ddd),url('https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1200') center/cover;color:white}
+.hero h1{font-size:clamp(26px,5vw,42px);margin:0 0 10px}
+.hero p{line-height:1.9}
+.wrap{max-width:1100px;margin:auto;padding:0 15px 40px}
+.tools{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0}
+input,select{font:inherit;padding:13px;border:1px solid var(--border);border-radius:12px;background:white;min-width:0}
+#search{flex:1;min-width:190px}
+.primary{background:var(--main);color:white;padding:12px 17px;border-radius:12px}
+.secondary{background:#fff0e3;color:#a94e13;padding:10px 14px;border-radius:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.recipe{background:var(--card);border:1px solid var(--border);border-radius:17px;overflow:hidden;box-shadow:var(--shadow);transition:.2s}
+.recipe:hover{transform:translateY(-3px)}
+.photo{height:155px;background:#f5dfc9;display:grid;place-items:center;position:relative;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo span{font-size:60px}
+.tag{position:absolute;top:10px;right:10px;background:#fff;color:#a94e13;border-radius:20px;padding:5px 10px;font-size:12px}
+.info{padding:14px}
+.info h3{margin:0 0 8px}
+.muted{color:var(--muted);font-size:13px}
+.actions{display:flex;gap:8px;margin-top:12px}
+.actions button{flex:1}
+#details{display:none;background:white;border:1px solid var(--border);border-radius:18px;padding:20px;margin:20px 0;line-height:2}
+#details img{width:100%;max-height:280px;object-fit:cover;border-radius:14px}
+#details h2{color:var(--dark)}
+#details li{margin:6px 0}
+.section-title{margin:24px 0 14px}
+footer{text-align:center;color:var(--muted);padding:25px}
+.empty{text-align:center;padding:30px;color:var(--muted)}
+#install{display:none}
+.dark{
+--bg:#191613;--card:#28221e;--text:#fff2e6;
+--muted:#c4ad9a;--border:#49382d;--shadow:0 5px 20px #0003
+}
+.dark input,.dark select{background:#302923;color:white;border-color:#574333}
+.dark #details{background:#28221e}
+.dark .secondary{background:#49382d;color:#ffd0a5}
+</style>
+</head>
+<body>
+
+<header>
+<div class="top">
+<div class="logo">🍽️ سفرتنا</div>
+<nav>
+<button class="active" data-cat="الكل">الرئيسية</button>
+<button data-cat="إندومي">إندومي</button>
+<button data-cat="وجبات">وجبات</button>
+<button data-cat="سريعة">سريعة</button>
+<button data-cat="مشروبات">مشروبات</button>
+<button id="favBtn">❤️ المفضلة</button>
+</nav>
+</div>
+</header>
+
+<section class="hero wrap">
+<h1>أهلاً بك في سفرتنا 🍽️</h1>
+<p>وصفات تجمعنا ❤️ اكتشف وصفات سهلة ولذيذة، من الإندومي إلى أكلات الغداء والمشروبات. اختار وصفتك وابدأ الطبخ!</p>
+<button class="primary" onclick="document.getElementById('recipes').scrollIntoView({behavior:'smooth'})">اكتشف الوصفات</button>
+<button class="secondary" id="install">📲 تثبيت التطبيق</button>
+</section>
+
+<main class="wrap">
+<div class="tools">
+<input id="search" placeholder="ابحث عن وصفة أو مكون...">
+<select id="sort">
+<option value="default">ترتيب عادي</option>
+<option value="short">الأسرع أولاً</option>
+<option value="name">حسب الاسم</option>
+</select>
+<button class="secondary" id="theme">🌙 الوضع الليلي</button>
+</div>
+
+<h2 class="section-title" id="heading">كل الوصفات 🍽️</h2>
+<div id="details"></div>
+<div class="grid" id="recipes"></div>
+<p id="empty" class="empty" hidden>لا توجد وصفات مطابقة للبحث.</p>
+</main>
+
+<footer>
+<b>🍽️ سفرتنا</b>
+<p>وصفات تجمعنا ❤️</p>
+<p>© <span id="year"></span> سفرتنا</p>
+</footer>
+
+<script>
+const names = [
+["اندومي كلاسيك","إندومي","🍜",10],
+["قنبلة الجبنة","إندومي","🧀",12],
+["اندومي سبايسي","إندومي","🌶️",12],
+["اندومي بالبيض","إندومي","🍳",15],
+["اندومي بالسجق","إندومي","🌭",15],
+["اندومي بالتونة","إندومي","🐟",12],
+["اندومي بالفراخ","إندومي","🍗",20],
+["اندومي بالخضار","إندومي","🥕",15],
+["اندومي وايت صوص","إندومي","🥛",20],
+["اندومي كوري","إندومي","🍜",15],
+["اندومي بالبسطرمة","إندومي","🥩",15],
+["اندومي مقلي","إندومي","🍳",15],
+["بيض بالبسطرمة","سريعة","🍳",10],
+["بطاطس كرسبي","سريعة","🍟",25],
+["شكشوكة","سريعة","🍅",15],
+["سندوتش تونة","سريعة","🥪",10],
+["مكرونة سريعة","سريعة","🍝",20],
+["رز بالبيض","سريعة","🍚",15],
+["حواوشي طاسة","وجبات","🥙",30],
+["فول بالسجق","وجبات","🍲",20],
+["فراخ بالبصل والطماطم","وجبات","🍗",35],
+["كفتة الأرز","وجبات","🍢",40],
+["مكرونة بالصلصة","وجبات","🍝",25],
+["أرز بالشعرية","وجبات","🍚",25],
+["بطاطس بالفراخ في الفرن","وجبات","🥔",45],
+["مكرونة بالبشاميل","وجبات","🍝",60],
+["كشري مصري","وجبات","🍛",50],
+["فراخ بالبطاطس","وجبات","🍗",45],
+["طاجن بامية","وجبات","🍲",45],
+["مسقعة باللحمة","وجبات","🍆",40],
+["صينية خضار بالفرن","وجبات","🥘",40],
+["فول بالصلصة","وجبات","🫘",15],
+["أرز بالكبدة","وجبات","🍚",30],
+["شاورما فراخ منزلية","وجبات","🌯",35],
+["كوسة بالصلصة","وجبات","🥒",30],
+["عدس أصفر","وجبات","🍲",30],
+["بيض بالبطاطس","سريعة","🍳",20],
+["فراخ بالكريمة","وجبات","🍗",35],
+["طاجن لسان عصفور","وجبات","🥘",35],
+["سمك بالفرن","وجبات","🐟",40],
+["شاي كشري","مشروبات","☕",5],
+["قهوة تركي","مشروبات","☕",7],
+["نسكافيه فوم","مشروبات","🥛",7],
+["ليمون نعناع","مشروبات","🍋",5],
+["موز بلبن","مشروبات","🍌",5],
+["شاي بلبن","مشروبات","🫖",7],
+["هوت شوكليت","مشروبات","🍫",10],
+["سحلب","مشروبات","🥛",15],
+["كركديه","مشروبات","🌺",10],
+["تمر هندي","مشروبات","🧃",10]
+];
+
+const recipes = names.map((x,i)=>({
+id:i,name:x[0],cat:x[1],emoji:x[2],time:x[3],
+ingredients:makeIngredients(x[1],x[0]),
+steps:makeSteps(x[1],x[0]),
+tip:"جهز المكونات قبل البدء، واضبط الملح والتوابل حسب ذوقك. لا تترك الطعام على النار دون متابعة."
+}));
+
+function makeIngredients(cat,name){
+if(cat==="مشروبات")return ["كوب ماء أو لبن حسب الوصفة","سكر حسب الرغبة","المكون الأساسي للمشروب","ثلج عند الرغبة"];
+if(cat==="إندومي")return ["كيس إندومي","كوبان ماء","ملعقة زيت صغيرة","إضافات حسب الوصفة: بيض أو جبنة أو خضار"];
+if(cat==="سريعة")return ["المكون الأساسي للوصفة","ملعقة زيت","ملح وفلفل حسب الرغبة","طماطم أو بصل حسب الوصفة"];
+return ["المكون الأساسي: "+name,"بصلة متوسطة","حبتان طماطم أو خضار مناسب","ملعقة زيت","ملح وفلفل وبهارات حسب الرغبة"];
+}
+
+function makeSteps(cat,name){
+if(cat==="مشروبات")return ["ضع المكونات في الخلاط أو الإناء المناسب.","أضف السكر تدريجياً.","اخلط أو قلّب حتى تتجانس المكونات.","قدّم المشروب بارداً أو ساخناً حسب نوعه."];
+if(cat==="إندومي")return ["اغلِ الماء في إناء مناسب.","أضف الإندومي واتبع مدة الطهي المكتوبة على العبوة.","أضف التوابل والمكونات الإضافية المناسبة.","قلّب جيداً حتى تمتزج النكهات ثم قدّم ساخناً."];
+if(cat==="سريعة")return ["حضّر المكونات وقطّع الخضار.","سخّن الزيت في طاسة مناسبة.","أضف المكونات وقلّب حتى تنضج جيداً.","اضبط التوابل وقدّم الطبق."];
+return ["اغسل المكونات وجهزها وقطّع الخضار.","سخّن الزيت وأضف البصل حتى يذبل.","أضف المكون الأساسي والطماطم والبهارات.","أضف كمية مناسبة من الماء إذا احتاجت الوصفة.","اترك الطعام حتى ينضج تماماً مع المتابعة.","قدّم الطبق ساخناً."];
+}
+
+const imageTerms=[
+"instant noodles","cheese noodles","spicy noodles","egg noodles",
+"sausage noodles","tuna noodles","chicken noodles","vegetable noodles",
+"creamy noodles","korean noodles","pastrami noodles","fried noodles",
+"eggs pastrami","crispy french fries","shakshuka eggs","tuna sandwich",
+"tomato pasta","egg fried rice","hawawshi","foul sausage",
+"chicken tomato","kofta","pasta sauce","rice vermicelli",
+"chicken potato","bechamel pasta","koshari","chicken potatoes",
+"okra tomato","eggplant meat","roasted vegetables","fava beans",
+"liver rice","chicken shawarma","zucchini tomato","lentil soup",
+"egg potato","creamy chicken","orzo tomato","baked fish",
+"black tea","turkish coffee","coffee milk","lemon mint drink",
+"banana milkshake","milk tea","hot chocolate","sahlab",
+"hibiscus drink","tamarind drink"
+];
+
+function imageURL(i){
+return "https://loremflickr.com/700/450/"+encodeURIComponent(imageTerms[i])+"?lock="+(i+30);
+}
+
+let category="الكل";
+let favorites=JSON.parse(localStorage.getItem("sofretnaFavs")||"[]");
+let onlyFav=false;
+
+const grid=document.getElementById("recipes");
+const details=document.getElementById("details");
+const search=document.getElementById("search");
+
+function render(){
+let list=recipes.filter(r=>{
+let matchCat=category==="الكل"||r.cat===category;
+let matchSearch=(r.name+" "+r.ingredients.join(" ")).includes(search.value.trim());
+let matchFav=!onlyFav||favorites.includes(r.id);
+return matchCat&&matchSearch&&matchFav;
+});
+if(document.getElementById("sort").value==="short")list.sort((a,b)=>a.time-b.time);
+if(document.getElementById("sort").value==="name")list.sort((a,b)=>a.name.localeCompare(b.name,"ar"));
+grid.innerHTML="";
+document.getElementById("empty").hidden=list.length!==0;
+
+list.forEach(r=>{
+let card=document.createElement("article");
+card.className="recipe";
+card.innerHTML=`
+<div class="photo">
+<span>${r.emoji}</span>
+<img src="${imageURL(r.id)}" alt="${r.name}" loading="lazy">
+<small class="tag">${r.cat}</small>
+</div>
+<div class="info">
+<h3>${r.name}</h3>
+<p class="muted">⏱️ ${r.time} دقيقة</p>
+<div class="actions">
+<button class="primary" data-open="${r.id}">عرض الوصفة</button>
+<button class="secondary" data-fav="${r.id}">${favorites.includes(r.id)?"❤️":"🤍"}</button>
+</div>
+</div>`;
+const img=card.querySelector("img");
+img.onerror=()=>img.remove();
+grid.appendChild(card);
+});
+document.getElementById("heading").textContent=onlyFav?"وصفاتي المفضلة ❤️":category==="الكل"?"كل الوصفات 🍽️":category;
+}
+
+function openRecipe(id){
+const r=recipes.find(x=>x.id===id);
+if(!r)return;
+details.style.display="block";
+details.innerHTML=`
+<button class="secondary" id="closeDetails">✖ إغلاق</button>
+<h2>${r.emoji} ${r.name}</h2>
+<p class="muted">⏱️ وقت التحضير: ${r.time} دقيقة</p>
+<img src="${imageURL(r.id)}" alt="${r.name}">
+<h3>🧺 المكونات</h3>
+<ul>${r.ingredients.map(x=>"<li>"+x+"</li>").join("")}</ul>
+<h3>👨‍🍳 طريقة التحضير</h3>
+<ol>${r.steps.map(x=>"<li>"+x+"</li>").join("")}</ol>
+<h3>💡 نصيحة الشيف</h3><p>${r.tip}</p>
+<button class="primary" onclick="window.print()">🖨️ طباعة الوصفة</button>`;
+details.querySelector("#closeDetails").onclick=()=>details.style.display="none";
+details.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+grid.addEventListener("click",e=>{
+const open=e.target.closest("[data-open]");
+const fav=e.target.closest("[data-fav]");
+if(open)openRecipe(Number(open.dataset.open));
+if(fav){
+let id=Number(fav.dataset.fav);
+favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
+localStorage.setItem("sofretnaFavs",JSON.stringify(favorites));
+render();
+}
+});
+
+document.querySelectorAll("nav [data-cat]").forEach(btn=>{
+btn.onclick=()=>{
+onlyFav=false;
+category=btn.dataset.cat;
+document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+btn.classList.add("active");
+render();
+};
+});
+
+document.getElementById("favBtn").onclick=()=>{
+onlyFav=!onlyFav;
+category="الكل";
+render();
+};
+
+search.oninput=render;
+document.getElementById("sort").onchange=render;
+
+document.getElementById("theme").onclick=()=>{
+document.body.classList.toggle("dark");
+localStorage.setItem("sofretnaDark",document.body.classList.contains("dark"));
+};
+
+if(localStorage.getItem("sofretnaDark")==="true")document.body.classList.add("dark");
+
+document.getElementById("year").textContent=new Date().getFullYear();
+render();
+
+let installPrompt;
+const installBtn=document.getElementById("install");
+
+window.addEventListener("beforeinstallprompt",e=>{
+e.preventDefault();
+installPrompt=e;
+installBtn.style.display="inline-block";
+});
+
+installBtn.onclick=async()=>{
+if(!installPrompt)return;
+installPrompt.prompt();
+await installPrompt.userChoice;
+installPrompt=null;
+installBtn.style.display="none";
+};
+
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+window.addEventListener("load",()=>{
+navigator.serviceWorker.register("./sw.js").catch(console.error);
+});
+}
+</script>
+</body>
+</html>
