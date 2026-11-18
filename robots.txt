@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://mbas22943-del.github.io/SOFRETNA/sitemap.xml
